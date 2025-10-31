@@ -1,6 +1,6 @@
 # SC2002-Grp_Project
 
-This is the repository that contains the files required for the SCC2002 Group Project.
+This is the repository that contains the files required for the SC2002 Group Project.
 
 
 
