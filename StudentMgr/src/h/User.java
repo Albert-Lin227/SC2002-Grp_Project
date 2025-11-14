@@ -2,21 +2,21 @@ package h;
 
 public abstract class User {
 	protected String username, password;
-	protected static bool isLoggedIn = false;
+	protected boolean isLoggedIn = false; //fixed boolean statement + removed static keyword for instance-level login behavior
 	protected final int id;
 
-	private String getUsername() {
+	public String getUsername() { //getter methods should be public/protected if access needed~
 		return username;
 	}
-	private String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	private int getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void User(String username, String password, int id) {
+	public User(String username, String password, int id) { //fixed constructor
 		this.username = username;
 		this.password = password;
 		this.id = id;
