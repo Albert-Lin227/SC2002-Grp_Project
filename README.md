@@ -13,7 +13,7 @@ cd StudentMgr
 javac -d bin src/h/*.java
 ```
 
-4. Run the application (replace <MainClass> with the fully-qualified class that contains `public static void main`):
+4. Run the application:
 ```bash
 java -cp bin h.MainApplication
 ```
