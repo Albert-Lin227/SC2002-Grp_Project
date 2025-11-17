@@ -1,14 +1,14 @@
 package h;
 
 public enum InternshipLevel {
-    BASIC("Basic", 1),
-    INTERMEDIATE("Intermediate", 2),
-    ADVANCED("Advanced", 3);
+    BASIC(1, "Basic"),
+    INTERMEDIATE(2, "Intermediate"),
+    ADVANCED(3, "Advanced");
 
     private final String displayName;
     private final int level;
 
-    InternshipLevel(String displayName, int level) {
+    InternshipLevel(int level, String displayName) {
         this.displayName = displayName;
         this.level = level;
     }
@@ -30,10 +30,5 @@ public enum InternshipLevel {
         } catch (IllegalArgumentException e) {
             return null;
         }
-    }
-
-    @Override
-    public String toString() {
-        return displayName;
     }
 }

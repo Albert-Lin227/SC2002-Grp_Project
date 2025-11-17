@@ -74,29 +74,4 @@ public class StudentApplication implements Serializable {
     public Date getStatusUpdatedDate() {
         return statusUpdatedDate;
     }
-
-    @Override
-    public String toString() {
-        return "StudentApplication{" +
-                "studentId=" + studentId +
-                ", internshipId=" + internshipId +
-                ", status='" + status + '\'' +
-                ", accepted=" + accepted +
-                ", applicationDate=" + applicationDate +
-                ", statusUpdatedDate=" + statusUpdatedDate +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        StudentApplication app = (StudentApplication) obj;
-        return studentId == app.studentId && internshipId == app.internshipId;
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(studentId, internshipId);
-    }
 }

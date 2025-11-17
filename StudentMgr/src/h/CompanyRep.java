@@ -15,6 +15,7 @@ public class CompanyRep extends User {
     private boolean isApproved;
     private static final int MAX_INTERNSHIPS = 5;
 
+
     public CompanyRep(String username, String password, int id, String userId, 
                      String name, String companyName, String department, String position) {
         super(username, password, id);
@@ -155,17 +156,5 @@ public class CompanyRep extends User {
         if (internship != null) {
             internship.setStatus("Rejected");
         }
-    }
-
-    @Override
-    public String toString() {
-        return "CompanyRep{" +
-                "userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", position='" + position + '\'' +
-                ", isApproved=" + isApproved +
-                ", internships=" + internships.size() +
-                '}';
     }
 }

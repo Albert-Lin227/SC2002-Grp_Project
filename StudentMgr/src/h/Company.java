@@ -106,14 +106,4 @@ public class Company {
         }
         return false;
     }
-
-    @Override
-    public String toString() {
-        return "Company{" +
-                "companyName='" + companyName + '\'' +
-                ", email='" + email + '\'' +
-                ", internships=" + internships.size() +
-                ", representatives=" + representatives.size() +
-                '}';
-    }
 }

@@ -86,7 +86,7 @@ public class Student extends User {
         StudentApplication acceptedApp = null;
         for (StudentApplication app : applications) {
             if (app.getInternshipId() == internshipId) {
-                if (!"Successful".equals(app.getStatus())) {
+                if (!app.getStatus().equals("Successful")) {
                     System.out.println("Error: Can only accept internships with 'Successful' status.");
                     return false;
                 }
@@ -133,7 +133,7 @@ public class Student extends User {
             return false;
         }
 
-        if ("Withdrawn".equals(app.getStatus()) || "Rejected".equals(app.getStatus())) {
+        if (app.getStatus().equals("Withdrawn") || app.getStatus().equals("Rejected")) {
             System.out.println("Error: Cannot withdraw from this application.");
             return false;
         }
@@ -155,7 +155,7 @@ public class Student extends User {
         int count = 0;
         for (StudentApplication app : applications) {
             String status = app.getStatus();
-            if (!"Rejected".equals(status) && !"Withdrawn".equals(status)) {
+            if (!status.equals("Rejected") && !status.equals("Withdrawn")) {
                 count++;
             }
         }

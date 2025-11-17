@@ -3,11 +3,19 @@ package h;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Vector;
+import java.util.List;
+import java.util.Arrays;
 
 public class Internship implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private static int nextId = 1;
+    private static final List<String> VALID_STATUSES = Arrays.asList(
+        "Pending",
+        "Approved",
+        "Rejected",
+        "Filled"
+    );
 
     private int id;
     private String title;
@@ -78,19 +86,14 @@ public class Internship implements Serializable {
     public void setStatus(String status) {
         if (isValidStatus(status)) {
             this.status = status;
-            if ("Approved".equals(status)) {
+            if (status.equals("Approved")) {
                 this.isVisible = true;
             }
         }
     }
 
     private boolean isValidStatus(String status) {
-        return status != null && (
-            status.equals("Pending") ||
-            status.equals("Approved") ||
-            status.equals("Rejected") ||
-            status.equals("Filled")
-        );
+        return status != null && VALID_STATUSES.contains(status);
     }
 
     public String getCompanyName() {
@@ -151,21 +154,6 @@ public class Internship implements Serializable {
                 this.status = "Filled";
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Internship{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", level=" + level +
-                ", preferredMajor=" + preferredMajor +
-                ", status='" + status + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", totalSlots=" + totalSlots +
-                ", filledSlots=" + filledSlots +
-                ", isVisible=" + isVisible +
-                '}';
     }
 }
 
