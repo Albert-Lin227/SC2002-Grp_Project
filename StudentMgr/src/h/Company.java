@@ -1,68 +1,119 @@
+package h;
+
 import java.util.Date;
 import java.util.Vector;
 
-package h;
-
-
 public class Company {
+    
     private String companyName;
-    private boolean isApproved;
+    private String email;
+    private String phone;
+    private String address;
     private Vector<Internship> internships;
+    private Vector<CompanyRep> representatives;
     private static final int MAX_INTERNSHIPS = 5;
 
-    public Company(String username, String password, String companyName) {
-        this.username = username;
-        this.password = password;
+    public Company(String companyName, String email, String phone, String address) {
         this.companyName = companyName;
-        this.isApproved = false;
-        this.internships = new Vector<Internship>();
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.internships = new Vector<>();
+        this.representatives = new Vector<>();
     }
 
-    public boolean createInternship(String title, String description, InternshipLevel level, 
-                                  Majors preferredMajor, Date openingDate, Date closingDate, 
-                                  int slots) {
-        if (internships.size() >= MAX_INTERNSHIPS) {
-            return false;
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public boolean addRepresentative(CompanyRep representative) {
+        if (representative != null && !representatives.contains(representative)) {
+            representatives.add(representative);
+            return true;
         }
-        if (slots > 10) {
-            return false;
+        return false;
+    }
+
+    public Vector<CompanyRep> getRepresentatives() {
+        return representatives;
+    }
+
+    public Internship createInternship(String title, 
+                                        String description, 
+                                        InternshipLevel level,
+                                        Majors preferredMajor, 
+                                        Date openingDate, 
+                                        Date closingDate,
+                                        String representativeUsername, 
+                                        int slots) {
+        if (internships.size() >= MAX_INTERNSHIPS) {
+            System.out.println("Error: Maximum number of internships (5) reached.");
+            return null;
+        }
+
+        if (slots > 10 || slots < 1) {
+            System.out.println("Error: Number of slots must be between 1 and 10.");
+            return null;
         }
 
         Internship internship = new Internship(
-            title, description, level, preferredMajor, openingDate, 
-            closingDate, companyName, this.username, slots
+            title, description, level, preferredMajor,
+            openingDate, closingDate, companyName, representativeUsername, slots
         );
         internships.add(internship);
-        return true;
+        return internship;
     }
 
     public Vector<Internship> getInternships() {
         return internships;
     }
 
-    public void setApproved(boolean approved) {
-        this.isApproved = approved;
-    }
-
-    public boolean isApproved() {
-        return isApproved;
-    }
-
-    public void toggleInternshipVisibility(int internshipId) {
+    public Internship getInternshipById(int internshipId) {
         for (Internship internship : internships) {
             if (internship.getId() == internshipId) {
-                internship.toggleVisibility();
-                return;
+                return internship;
             }
         }
+        return null;
     }
 
-    public void processApplication(int internshipId, int studentId, boolean isApproved) {
-        for (Internship internship : internships) {
-            if (internship.getId() == internshipId) {
-                internship.processApplication(studentId, isApproved);
-                return;
-            }
+    public boolean toggleInternshipVisibility(int internshipId) {
+        Internship internship = getInternshipById(internshipId);
+        if (internship != null) {
+            internship.toggleVisibility();
+            return true;
         }
+        return false;
+    }
+
+    public boolean processApplication(int internshipId, int studentId, boolean isApproved) {
+        Internship internship = getInternshipById(internshipId);
+        if (internship != null) {
+            internship.processApplication(studentId, isApproved);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "companyName='" + companyName + '\'' +
+                ", email='" + email + '\'' +
+                ", internships=" + internships.size() +
+                ", representatives=" + representatives.size() +
+                '}';
     }
 }
