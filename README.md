@@ -1,2 +1,17 @@
 # SC2002-Grp_Project
-A repository for the SC2002 group project
+## Build & Run
+
+1. Open a terminal and go to the project folder:
+```bash
+cd StudentMgr
+```
+
+2. Compile the sources:
+```bash
+javac -d bin src/h/*.java
+```
+
+4. Run the application:
+```bash
+java -cp bin h.MainApplication
+```
