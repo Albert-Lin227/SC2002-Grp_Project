@@ -105,10 +105,17 @@ public class MainApplication {
     private static void testInternshipApprovalByStaff(Internship internship) {
         printTestCaseHeader("Staff Approves Internship");
         
+        Student testStudent = new Student("U9999999Z", "testpwd", 99, 4, Majors.CSC);
+        testStudent.login("U9999999Z", "testpwd");
+        System.out.println("--- Before approval ---");
+        testStudent.applyForInternship(internship);
+
         CareerCenterStaff.authorizeInternship(internship, true);
         
+        System.out.println("--- After approval ---");
         System.out.println("Internship Status: " + internship.getStatus());
         System.out.println("Internship is Visible: " + internship.isVisible());
+        testStudent.applyForInternship(internship);
         System.out.println();
     }
     

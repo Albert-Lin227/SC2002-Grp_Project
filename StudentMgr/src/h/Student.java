@@ -2,6 +2,9 @@ package h;
 
 import java.util.Vector;
 
+/**
+ * Represents a student user, handling student-specific actions like applying for and accepting internships.
+ */
 public class Student extends User {
     private int yearOfStudy;
     private Majors major;
@@ -9,6 +12,14 @@ public class Student extends User {
     private int acceptedInternshipId;
     private static final int MAX_APPLICATIONS = 3;
 
+    /**
+     * Constructs a Student object.
+     * @param username The student's username.
+     * @param password The student's password.
+     * @param id The unique student ID.
+     * @param yearOfStudy The current year of study (1-4).
+     * @param major The student's academic major.
+     */
     public Student(String username, String password, int id, int yearOfStudy, Majors major) {
         super(username, password, id);
         this.yearOfStudy = yearOfStudy;
@@ -17,14 +28,37 @@ public class Student extends User {
         this.acceptedInternshipId = -1;
     }
 
+    /**
+     * Gets the student's current year of study.
+     * @return The year of study integer.
+     */
     public int getYearOfStudy() { return yearOfStudy; }
-    public Majors getMajor() { return major; }
-    public int getAcceptedInternshipId() { return acceptedInternshipId; }
     
+    /**
+     * Gets the student's academic major.
+     * @return The Majors enum representing the student's major.
+     */
+    public Majors getMajor() { return major; }
+    /**
+     * Gets the ID of the internship the student has accepted a placement for.
+     * Returns -1 if no placement has been accepted.
+     * @return The accepted internship ID.
+     */
+    public int getAcceptedInternshipId() { return acceptedInternshipId; }
+
+    /**
+     * Resets the accepted internship ID to -1, typically after a successful withdrawal.
+     */
     public void resetAcceptedInternshipId() {
         this.acceptedInternshipId = -1;
     }
 
+    /**
+     * Checks if the student meets the level requirement for the given internship level.
+     * Students in Year 1 or 2 are restricted to BASIC level internships.
+     * @param internshipLevel The level of the internship.
+     * @return true if the student is eligible, false otherwise.
+     */
     private boolean isEligibleByLevel(InternshipLevel internshipLevel) {
         if (yearOfStudy <= 2) {
             return internshipLevel == InternshipLevel.BASIC;
@@ -32,10 +66,20 @@ public class Student extends User {
         return true; // Year 3 and above can apply for any level
     }
 
+    /**
+     * Checks if the student's major matches the internship's preferred major.
+     * @param preferredMajor The preferred major of the internship.
+     * @return true if the majors match, false otherwise.
+     */
     private boolean isEligibleByMajor(Majors preferredMajor) {
         return this.major == preferredMajor;
     }
-    
+
+    /**
+     * Counts the number of active (Pending or Successful) applications the student currently has.
+     * Used to enforce the maximum application limit.
+     * @return The count of active applications.
+     */
     private int getActiveApplicationCount() {
         int count = 0;
         for (StudentApplication app : applications) {
@@ -48,6 +92,12 @@ public class Student extends User {
         return count;
     }
 
+    /**
+     * Allows a student to apply for an internship.
+     * Checks for eligibility, application limits, and if the internship is open/visible.
+     * @param internship The Internship object to apply for.
+     * @return true if the application was successfully submitted, false otherwise.
+     */
     public boolean applyForInternship(Internship internship) {
         if (!isLoggedIn) {
             System.out.println("Error: Student must be logged in to apply.");
@@ -78,6 +128,13 @@ public class Student extends User {
         return true;
     }
 
+    /**
+     * Accepts a successful internship placement.
+     * Sets the accepted internship ID, increments the internship's filled slots, and automatically
+     * withdraws the student from all other active applications.
+     * @param internshipId The ID of the internship placement to accept.
+     * @return true if the placement was accepted, false if it could not be accepted.
+     */
     public boolean acceptInternshipPlacement(int internshipId) {
         if (acceptedInternshipId != -1) {
             System.out.println("Error: Already accepted an internship placement (ID: " + acceptedInternshipId + ")");
@@ -102,6 +159,11 @@ public class Student extends User {
         return true;
     }
 
+    /**
+     * Retrieves the application details for a specific internship ID.
+     * @param internshipId The ID of the internship.
+     * @return The StudentApplication object, or null if no application is found.
+     */
     public StudentApplication getApplicationDetails(int internshipId) {
         for (StudentApplication app : applications) {
             if (app.getInternshipId() == internshipId) {
@@ -111,6 +173,12 @@ public class Student extends User {
         return null;
     }
     
+    /**
+     * Submits a request to withdraw from an application.
+     * Sets the application status to "Pending Withdrawal" for Career Center Staff review.
+     * @param internshipId The ID of the internship to withdraw from.
+     * @return true if the withdrawal request was submitted, false otherwise (e.g., invalid status).
+     */
     public boolean requestWithdrawal(int internshipId) {
         StudentApplication app = getApplicationDetails(internshipId);
         if (app == null) {
