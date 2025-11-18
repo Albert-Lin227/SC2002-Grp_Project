@@ -25,29 +25,8 @@ public enum Majors {
         return fullName;
     }
 
-    public static Majors getMajorById(int id) {
-        for (Majors major : Majors.values()) {
-            if (major.getId() == id) {
-                return major;
-            }
-        }
-        return null;
-    }
-
-    public static boolean isValid(String major) {
-        if (major == null || major.isEmpty()) {
-            return false;
-        }
-        try {
-            valueOf(major.toUpperCase());
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
-
     @Override
     public String toString() {
-        return this.name() + " - " + fullName;
+        return this.name();
     }
 }

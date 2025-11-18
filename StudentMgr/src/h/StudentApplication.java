@@ -19,7 +19,7 @@ public class StudentApplication implements Serializable {
     
     private int studentId;
     private int internshipId;
-    private String status; // "Pending", "Successful", "Rejected", "Withdrawn", "Pending Withdrawal"
+    private String status;
     private boolean accepted;
     private Date applicationDate;
     private Date statusUpdatedDate;
@@ -50,8 +50,7 @@ public class StudentApplication implements Serializable {
             this.status = status;
             this.statusUpdatedDate = new Date();
         } else {
-            throw new IllegalArgumentException("Invalid status: " + status + 
-                ". Valid statuses are: Pending, Successful, Rejected, Withdrawn, Pending Withdrawal");
+            throw new IllegalArgumentException("Invalid status: " + status);
         }
     }
 
@@ -69,9 +68,5 @@ public class StudentApplication implements Serializable {
 
     public Date getApplicationDate() {
         return applicationDate;
-    }
-
-    public Date getStatusUpdatedDate() {
-        return statusUpdatedDate;
     }
 }
