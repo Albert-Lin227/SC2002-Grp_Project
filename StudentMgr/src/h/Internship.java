@@ -155,5 +155,16 @@ public class Internship implements Serializable {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "ID: " + this.getId() +
+                ", Title: " + this.getTitle() + 
+                ", Company: " + this.getCompanyName() + 
+                ", Status: " + this.getStatus() + 
+                ", Major: " + this.getPreferredMajor().name() + 
+                ", Level: " + this.getLevel().name() +
+                ", Slots: " + this.getFilledSlots() + "/" + this.getTotalSlots();
+    }
 }
 

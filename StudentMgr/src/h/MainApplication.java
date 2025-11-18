@@ -2,6 +2,8 @@ package h;
 
 import java.util.Date;
 import java.util.Calendar;
+import java.util.List; // NEW
+import java.util.ArrayList; // NEW
 
 public class MainApplication {
     
@@ -16,21 +18,25 @@ public class MainApplication {
         System.out.println(ANSI_YELLOW + "Internship Placement Management System\n" + ANSI_RESET);
         
         runTestSimulation();
+
+        
     }
     
     public static void runTestSimulation() {
         
         Student student = initializeStudent();
         CompanyRep rep = initializeCompanyRep();
-        
+        CareerCenterStaff staff = initializeStaff();
+    
         testStudentBasics(student);
+        testRepAuthorization(staff, rep);
         testCompanyRepBasics(rep);
         
         Internship internship = testInternshipCreation(rep);
-        testInternshipApproval(internship);
-        
+        testInternshipApprovalByStaff(staff, internship);
         testApplicationWorkflow(student, internship, rep);
-        
+        testWithdrawalWorkflow(student, internship, staff);
+        testStaffReporting(staff, internship);
         testLogout(student);
         
     }
@@ -44,8 +50,14 @@ public class MainApplication {
         CompanyRep rep = new CompanyRep("test@test.com", "password", 2, 
                                          "rep1", "Test Rep", "Tech Company", 
                                          "Engineering", "Manager");
-        rep.setApproved(true);
+        rep.setApproved(false); 
         return rep;
+    }
+    
+    // NEW: Initialization method for Staff
+    private static CareerCenterStaff initializeStaff() {
+        CareerCenterStaff staff = new CareerCenterStaff("StaffAdmin", "staffpwd", 100);
+        return staff;
     }
 
     private static void testStudentBasics(Student student) {
@@ -66,10 +78,35 @@ public class MainApplication {
     }
 
     private static void testCompanyRepBasics(CompanyRep rep) {
-        System.out.println(ANSI_CYAN + "Test Case: Company Representative Creation" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "Test Case: Company Representative Creation & Login" + ANSI_RESET);
         
         System.out.println("Company Rep: " + rep.getName());
         System.out.println("Company: " + rep.getCompanyName());
+
+        boolean loginSuccess = rep.login("test@test.com", "password");
+        System.out.print("Login Status: ");
+        if (loginSuccess) {
+            System.out.println(ANSI_GREEN + "Success" + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_RED + "Failed" + ANSI_RESET);
+        }
+        rep.logout();
+        System.out.println();
+    }
+    
+    private static void testRepAuthorization(CareerCenterStaff staff, CompanyRep rep) {
+        System.out.println(ANSI_CYAN + "Test Case: Staff Authorizes Company Rep" + ANSI_RESET);
+        
+        System.out.println("Rep Approved Status Before Staff Action: " + (rep.isApproved() ? ANSI_GREEN + "TRUE" : ANSI_RED + "FALSE") + ANSI_RESET);
+        
+        staff.authorizeCompanyRep(rep, true);
+        
+        System.out.print("Rep Approved Status After Staff Action: ");
+        if (rep.isApproved()) {
+            System.out.println(ANSI_GREEN + "TRUE" + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_RED + "FALSE" + ANSI_RESET);
+        }
         System.out.println();
     }
 
@@ -97,10 +134,10 @@ public class MainApplication {
         return internship;
     }
 
-    private static void testInternshipApproval(Internship internship) {
-        System.out.println(ANSI_CYAN + "Test Case: Internship Approval" + ANSI_RESET);
+    private static void testInternshipApprovalByStaff(CareerCenterStaff staff, Internship internship) {
+        System.out.println(ANSI_CYAN + "Test Case: Staff Approves Internship" + ANSI_RESET);
         
-        internship.setStatus("Approved");
+        staff.approveInternship(internship);
         
         System.out.println("Internship Status: " + internship.getStatus());
         System.out.print("Is Visible: ");
@@ -144,6 +181,38 @@ public class MainApplication {
             System.out.println(ANSI_RED + "FALSE" + ANSI_RESET);
         }
         System.out.println("Accepted Internship ID: " + student.getAcceptedInternshipId());
+        System.out.println();
+    }
+
+    private static void testWithdrawalWorkflow(Student student, Internship internship, CareerCenterStaff staff) {
+        System.out.println(ANSI_CYAN + "Test Case: Withdrawal Request and Staff Approval" + ANSI_RESET);
+        
+        boolean requestResult = student.requestWithdrawal(internship.getId());
+        
+        StudentApplication app = student.getApplicationDetails(internship.getId());
+        
+        System.out.print("Withdrawal Request Status: ");
+        if (requestResult) {
+            System.out.println(ANSI_GREEN + "Submitted (" + app.getStatus() + ")" + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_RED + "Failed" + ANSI_RESET);
+        }
+        
+        staff.processWithdrawalRequest(student, internship.getId(), true);
+        
+        System.out.println("Final Application Status: " + app.getStatus());
+        System.out.println("Student Accepted Internship ID after withdrawal: " + student.getAcceptedInternshipId());
+        System.out.println();
+    }
+    
+    private static void testStaffReporting(CareerCenterStaff staff, Internship internship) {
+        System.out.println(ANSI_CYAN + "Test Case: Staff Generates Report (Conceptual)" + ANSI_RESET);
+        
+        List<Internship> allInternships = new ArrayList<>();
+        allInternships.add(internship);
+
+        staff.generateInternshipReport(allInternships, null, Majors.CSC, InternshipLevel.INTERMEDIATE);
+        
         System.out.println();
     }
 

@@ -19,7 +19,7 @@ public class StudentApplication implements Serializable {
     
     private int studentId;
     private int internshipId;
-    private String status; // "Pending", "Successful", "Rejected", "Withdrawn", "Pending Withdrawal"
+    private String status;
     private boolean accepted;
     private Date applicationDate;
     private Date statusUpdatedDate;
