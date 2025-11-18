@@ -42,96 +42,46 @@ public class Internship implements Serializable {
         this.preferredMajor = preferredMajor;
         this.openingDate = openingDate;
         this.closingDate = closingDate;
-        this.status = "Pending";
+        this.status = "Pending"; // Default status
         this.companyName = companyName;
         this.representativeUsername = representativeUsername;
         this.totalSlots = slots;
         this.filledSlots = 0;
-        this.isVisible = false; // Initially not visible until approved
+        this.isVisible = false; // Not visible until approved
         this.applications = new Vector<>();
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public InternshipLevel getLevel() {
-        return level;
-    }
-
-    public Majors getPreferredMajor() {
-        return preferredMajor;
-    }
-
-    public Date getOpeningDate() {
-        return openingDate;
-    }
-
-    public Date getClosingDate() {
-        return closingDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
+    
+    public int getId() { return id; }
+    public String getTitle() { return title; }
+    public InternshipLevel getLevel() { return level; }
+    public Majors getPreferredMajor() { return preferredMajor; }
+    public String getStatus() { return status; }
+    public String getCompanyName() { return companyName; }
+    public int getTotalSlots() { return totalSlots; }
+    public int getFilledSlots() { return filledSlots; }
+    public boolean isVisible() { return isVisible; }
 
     public void setStatus(String status) {
-        if (isValidStatus(status)) {
+        if (VALID_STATUSES.contains(status)) {
             this.status = status;
             if (status.equals("Approved")) {
-                this.isVisible = true;
+                this.isVisible = true; 
             }
         }
     }
 
-    private boolean isValidStatus(String status) {
-        return status != null && VALID_STATUSES.contains(status);
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public String getRepresentativeUsername() {
-        return representativeUsername;
-    }
-
-    public int getTotalSlots() {
-        return totalSlots;
-    }
-
-    public int getFilledSlots() {
-        return filledSlots;
-    }
-
-    public int getRemainingSlots() {
-        return totalSlots - filledSlots;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
-    }
-
     public void toggleVisibility() {
-        this.isVisible = !this.isVisible;
+        if (this.status.equals("Approved")) {
+            this.isVisible = !this.isVisible;
+        } else {
+             System.out.println("Error: Cannot toggle visibility. Internship status must be Approved.");
+        }
     }
 
     public void addApplication(StudentApplication application) {
         if (application != null && !applications.contains(application)) {
             applications.add(application);
         }
-    }
-
-    public Vector<StudentApplication> getApplications() {
-        return applications;
     }
 
     public void processApplication(int studentId, boolean isApproved) {
@@ -152,6 +102,7 @@ public class Internship implements Serializable {
             filledSlots++;
             if (filledSlots >= totalSlots) {
                 this.status = "Filled";
+                this.isVisible = false; // Students cannot apply when Filled
             }
         }
     }
@@ -167,4 +118,3 @@ public class Internship implements Serializable {
                 ", Slots: " + this.getFilledSlots() + "/" + this.getTotalSlots();
     }
 }
-

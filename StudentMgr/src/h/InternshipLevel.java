@@ -20,15 +20,4 @@ public enum InternshipLevel {
     public int getLevel() {
         return level;
     }
-
-    public static InternshipLevel getByName(String name) {
-        if (name == null || name.isEmpty()) {
-            return null;
-        }
-        try {
-            return valueOf(name.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
 }

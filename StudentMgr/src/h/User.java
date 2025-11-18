@@ -16,12 +16,12 @@ public abstract class User {
         return username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
     }
 
     public boolean login(String username, String password) {
@@ -60,9 +60,5 @@ public abstract class User {
         System.out.println("Password changed successfully. Please log in again.");
         isLoggedIn = false;
         return true;
-    }
-
-    public boolean isLoggedIn() {
-        return isLoggedIn;
     }
 }
