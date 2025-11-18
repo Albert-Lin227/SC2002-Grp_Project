@@ -6,19 +6,13 @@ import java.util.Vector;
 public class Company {
     
     private String companyName;
-    private String email;
-    private String phone;
-    private String address;
     private Vector<Internship> internships;
     private Vector<CompanyRep> representatives;
     private Vector<CareerCenterStaff> careerCenterStaffs; // For comprehensive system management
     private static final int MAX_INTERNSHIPS = 5;
 
-    public Company(String companyName, String email, String phone, String address) {
+    public Company(String companyName) {
         this.companyName = companyName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
         this.internships = new Vector<>();
         this.representatives = new Vector<>();
         this.careerCenterStaffs = new Vector<>();

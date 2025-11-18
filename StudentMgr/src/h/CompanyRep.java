@@ -6,6 +6,7 @@ public class CompanyRep extends User {
     
     private String name;
     private String companyName;
+    private String email;
     private boolean isApproved;
     private Company company; 
 
@@ -15,6 +16,7 @@ public class CompanyRep extends User {
         this.name = name;
         this.companyName = companyName;
         this.isApproved = false;
+        this.email = username + "@" + companyName.replaceAll(" ", "").toLowerCase() + ".com";
     }
 
     public void setCompany(Company company) {

@@ -24,7 +24,7 @@ public class MainApplication {
         CompanyRep rep = initializeCompanyRep();
         CareerCenterStaff staff = initializeStaff();
         
-        Company techCompany = new Company("Tech Company", "info@tech.com", "12345678", "123 Tech Street");
+        Company techCompany = new Company("Tech Company");
         techCompany.addRepresentative(rep);
         techCompany.addCareerCenterStaff(staff);
         
@@ -51,7 +51,7 @@ public class MainApplication {
     }
 
     private static CompanyRep initializeCompanyRep() {
-        CompanyRep rep = new CompanyRep("rep@tech.com", "reppwd", 2, 
+        CompanyRep rep = new CompanyRep("rep@tech.com", "password", 2, 
                                          "rep1", "Test Rep", "Tech Company", 
                                          "Engineering", "Manager");
         rep.setApproved(false); // Starts as unapproved
