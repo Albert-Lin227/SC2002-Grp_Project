@@ -2,6 +2,7 @@ package h;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,9 @@ public class MainApplication {
     public static final String ANSI_PURPLE = "\u001B[35m";
 
     public static void main(String[] args) {
+        
+    }
+    public static void simulateTest () {
         System.out.println(ANSI_YELLOW + "--- Internship Placement Management System Test ---" + ANSI_RESET);
 
         Student student = new Student("U2345123F", "studentpwd", 1, 3, Majors.CSC); 
