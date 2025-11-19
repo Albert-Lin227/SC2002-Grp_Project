@@ -20,7 +20,7 @@ public class MainApplication {
     public static final String ANSI_PURPLE = "\u001B[35m";
 
     public static void main(String[] args) {
-        
+        simulateTest();
     }
     public static void simulateTest () {
         System.out.println(ANSI_YELLOW + "--- Internship Placement Management System Test ---" + ANSI_RESET);
