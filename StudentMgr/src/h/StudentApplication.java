@@ -114,4 +114,20 @@ public class StudentApplication implements Serializable {
     public Date getApplicationDate() {
         return applicationDate;
     }
+
+    /** 
+     * Prints the student application details.
+     * @return A string representation of the student application.
+     */
+    @Override
+    public String toString() {
+        return "StudentApplication{" +
+               "studentId=" + studentId +
+               ", internshipId=" + internshipId +
+               ", status='" + status + '\'' +
+               ", accepted=" + accepted +
+               ", applicationDate=" + applicationDate +
+               ", statusUpdatedDate=" + statusUpdatedDate +
+               '}';
+    }
 }

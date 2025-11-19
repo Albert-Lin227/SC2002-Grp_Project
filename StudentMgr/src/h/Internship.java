@@ -12,7 +12,6 @@ import java.util.Arrays;
  */
 public class Internship implements Serializable {
     
-    private static final long serialVersionUID = 1L;
     private static int nextId = 1;
     private static final List<String> VALID_STATUSES = Arrays.asList(
         "Pending",

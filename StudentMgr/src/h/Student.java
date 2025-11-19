@@ -204,4 +204,11 @@ public class Student extends User {
         System.out.println("Withdrawal request submitted for approval by Career Center Staff.");
         return true;
     }
+
+    public void printApplications() {
+        System.out.println("Applications for Student ID: " + id);
+        for (StudentApplication app : applications) {
+            System.out.println(app.toString());
+        }
+    }
 }
