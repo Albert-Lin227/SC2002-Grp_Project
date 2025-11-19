@@ -1,6 +1,8 @@
 package h;
 
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents a student user, handling student-specific actions like applying for and accepting internships.
@@ -22,6 +24,12 @@ public class Student extends User {
      */
     public Student(String username, String password, int id, int yearOfStudy, Majors major) {
         super(username, password, id);
+
+        Pattern pattern = Pattern.compile("^U\\d{7}[a-zA-Z]$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(username);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid username format. Must be 'U' followed by 7 digits.");
+        }
         this.yearOfStudy = yearOfStudy;
         this.major = major;
         this.applications = new Vector<>();

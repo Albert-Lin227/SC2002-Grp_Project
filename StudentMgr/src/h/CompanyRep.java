@@ -11,7 +11,7 @@ public class CompanyRep extends User {
     private String name;
     private String companyName;
     private String email;
-    private boolean isApproved;
+    private boolean isApproved = false;
     private Company company; 
 
     /**

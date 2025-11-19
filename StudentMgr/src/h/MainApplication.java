@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class MainApplication {
     
-    // ANSI codes for console output formatting
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -15,73 +14,39 @@ public class MainApplication {
 
     public static void main(String[] args) {
         System.out.println(ANSI_YELLOW + "--- Internship Placement Management System Test ---" + ANSI_RESET);
-        runTestSimulation();
-    }
-    
-    public static void runTestSimulation() {
-        
-        Student student = initializeStudent();
-        CompanyRep rep = initializeCompanyRep();
-        CareerCenterStaff staff = initializeStaff();
-        
+
+        Student student = new Student("U2345123F", "studentpwd", 1, 3, Majors.CSC); 
+        CompanyRep rep = new CompanyRep("rep@tech.com", "password", 2, 
+                                         "rep1", "Test Rep", "Tech Company", 
+                                         "Engineering", "Manager");
+        CareerCenterStaff staff = new CareerCenterStaff("StaffAdmin", "staffpwd", 100);
+
+        // Initialize Company and link users
         Company techCompany = new Company("Tech Company");
         techCompany.addRepresentative(rep);
         techCompany.addCareerCenterStaff(staff);
         
-        testRepAuthorization(staff, rep);
-        
-        Internship internship = testInternshipCreation(rep);
-        testInternshipApprovalByStaff(internship);
-        
-        testStudentBasics(student);
-        testApplicationWorkflow(student, internship, techCompany);
-        
-        testVisibilityToggle(techCompany, internship.getId());
-
-        testWithdrawalWorkflow(student, internship, staff);
-        
-        testStaffReporting(staff, techCompany.getInternships());
-        
-        testLogout(student, rep);
-    }
     
+        // TEST CASE: Student Creation & Login
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Student Creation & Login ---" + ANSI_RESET);
 
-    private static Student initializeStudent() {
-        return new Student("U2345123F", "studentpwd", 1, 3, Majors.CSC); 
-    }
-
-    private static CompanyRep initializeCompanyRep() {
-        CompanyRep rep = new CompanyRep("rep@tech.com", "password", 2, 
-                                         "rep1", "Test Rep", "Tech Company", 
-                                         "Engineering", "Manager");
-        rep.setApproved(false); // Starts as unapproved
-        return rep;
-    }
-    
-    private static CareerCenterStaff initializeStaff() {
-        return new CareerCenterStaff("StaffAdmin", "staffpwd", 100);
-    }
-
-    private static void testStudentBasics(Student student) {
-        printTestCaseHeader("Student Creation & Login");
         student.login(student.getUsername(), "studentpwd");
         System.out.println();
-    }
+        
+    
 
-    private static void testRepAuthorization(CareerCenterStaff staff, CompanyRep rep) {
-        printTestCaseHeader("Staff Authorizes Company Rep");
-        
+        // TEST CASE: Staff Authorizes Company Rep
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Staff Authorizes Company Rep ---" + ANSI_RESET);
+
         System.out.println("Rep Approved Status Before: " + (rep.isApproved() ? ANSI_GREEN + "TRUE" : ANSI_RED + "FALSE") + ANSI_RESET);
-        
         staff.authorizeCompanyRep(rep, true);
-        
         System.out.println("Rep Approved Status After: " + (rep.isApproved() ? ANSI_GREEN + "TRUE" : ANSI_RED + "FALSE") + ANSI_RESET);
         System.out.println();
-    }
 
-    private static Internship testInternshipCreation(CompanyRep rep) {
-        printTestCaseHeader("Internship Creation (Rep Delegates to Company)");
         
+        // TEST CASE: Internship Creation (Rep Delegates to Company)
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Internship Creation (Rep Delegates to Company) ---" + ANSI_RESET);
+
         Date openingDate = new Date(System.currentTimeMillis()); 
         Date closingDate = new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000); 
         
@@ -99,33 +64,30 @@ public class MainApplication {
             System.out.println("Created: ID " + internship.getId() + ", Status: " + internship.getStatus());
         }
         System.out.println();
-        return internship;
-    }
 
-    private static void testInternshipApprovalByStaff(Internship internship) {
-        printTestCaseHeader("Staff Approves Internship");
         
+        // TEST CASE: Staff Approves Internship
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Staff Approves Internship ---" + ANSI_RESET);
+
+        // Application denial
         Student testStudent = new Student("U9999999Z", "testpwd", 99, 4, Majors.CSC);
         testStudent.login("U9999999Z", "testpwd");
         System.out.println("--- Before approval ---");
-        testStudent.applyForInternship(internship);
-
+        testStudent.applyForInternship(internship); // Should fail as status is Pending
         CareerCenterStaff.authorizeInternship(internship, true);
-        
         System.out.println("--- After approval ---");
         System.out.println("Internship Status: " + internship.getStatus());
         System.out.println("Internship is Visible: " + internship.isVisible());
         testStudent.applyForInternship(internship);
         System.out.println();
-    }
-    
-    private static void testApplicationWorkflow(Student student, Internship internship, Company company) {
-        printTestCaseHeader("Full Application and Acceptance Workflow");
         
+        
+        // TEST CASE: Full Application and Acceptance Workflow
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Full Application and Acceptance Workflow ---" + ANSI_RESET);
+
         student.applyForInternship(internship);
         StudentApplication app = student.getApplicationDetails(internship.getId());
-        
-        company.processApplication(internship.getId(), student.getId(), true);
+        techCompany.processApplication(internship.getId(), student.getId(), true);
         System.out.println("Application Status: " + (app != null ? ANSI_GREEN + app.getStatus() + ANSI_RESET : ANSI_RED + "ERROR" + ANSI_RESET));
 
         boolean acceptResult = student.acceptInternshipPlacement(internship.getId());
@@ -137,27 +99,33 @@ public class MainApplication {
         System.out.println("Internship Slots Filled: " + internship.getFilledSlots() + "/" + internship.getTotalSlots());
         System.out.println("Internship Final Status: " + internship.getStatus());
         System.out.println();
-    }
-
-    private static void testVisibilityToggle(Company company, int internshipId) {
-        printTestCaseHeader("Company Toggles Internship Visibility (Facade)");
         
-        boolean isVisibleBefore = company.getInternshipById(internshipId).isVisible();
+        
+        // =========================================================================
+        // TEST CASE: Company Toggles Internship Visibility (Facade)
+        // (Original: testVisibilityToggle)
+        // =========================================================================
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Company Toggles Internship Visibility (Facade) ---" + ANSI_RESET);
+        
+        boolean isVisibleBefore = techCompany.getInternshipById(internship.getId()).isVisible();
         System.out.println("Visibility Before Toggle: " + isVisibleBefore);
         
-        company.toggleInternshipVisibility(internshipId); 
+        techCompany.toggleInternshipVisibility(internship.getId()); 
         
-        boolean isVisibleAfter = company.getInternshipById(internshipId).isVisible();
+        boolean isVisibleAfter = techCompany.getInternshipById(internship.getId()).isVisible();
         System.out.println("Visibility After Toggle: " + isVisibleAfter);
         System.out.println();
-    }
-    
-    private static void testWithdrawalWorkflow(Student student, Internship internship, CareerCenterStaff staff) {
-        printTestCaseHeader("Withdrawal Request and Staff Approval");
+        
+        
+        // =========================================================================
+        // TEST CASE: Withdrawal Request and Staff Approval
+        // (Original: testWithdrawalWorkflow)
+        // =========================================================================
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Withdrawal Request and Staff Approval ---" + ANSI_RESET);
         
         student.requestWithdrawal(internship.getId());
         
-        StudentApplication app = student.getApplicationDetails(internship.getId());
+        app = student.getApplicationDetails(internship.getId()); // Get updated application details
         System.out.println("Application Status after Request: " + app.getStatus());
         
         staff.processWithdrawalRequest(student, internship.getId(), true);
@@ -165,26 +133,32 @@ public class MainApplication {
         System.out.println("Final Application Status: " + app.getStatus());
         System.out.println("Student Accepted Internship ID after withdrawal: " + student.getAcceptedInternshipId());
         System.out.println();
-    }
-    
-    private static void testStaffReporting(CareerCenterStaff staff, List<Internship> allInternships) {
-        printTestCaseHeader("Staff Generates Comprehensive Report");
         
+        
+        // =========================================================================
+        // TEST CASE: Staff Generates Comprehensive Report
+        // (Original: testStaffReporting)
+        // =========================================================================
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Staff Generates Comprehensive Report ---" + ANSI_RESET);
+        
+        List<Internship> allInternships = techCompany.getInternships();
+        
+        // Report 1: All internships
         staff.generateInternshipReport(allInternships, null, null, null);
         
+        // Report 2: Filtered by Approved, CSC, Intermediate
         staff.generateInternshipReport(allInternships, "Approved", Majors.CSC, InternshipLevel.INTERMEDIATE);
         
         System.out.println();
-    }
 
-    private static void testLogout(Student student, CompanyRep rep) {
-        printTestCaseHeader("Testing Logouts");
+
+        // =========================================================================
+        // TEST CASE: Testing Logouts
+        // (Original: testLogout)
+        // =========================================================================
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Testing Logouts ---" + ANSI_RESET);
         student.logout();
         rep.logout(); 
         System.out.println();
-    }
-    
-    private static void printTestCaseHeader(String title) {
-        System.out.println(ANSI_CYAN + "\n--- Test Case: " + title + " ---" + ANSI_RESET);
     }
 }
