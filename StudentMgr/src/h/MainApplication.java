@@ -4,8 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Please save me the test cases are not in order 
+ * AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+ * But the test cases have been reordered so they flow better
+ */
 public class MainApplication {
-    
+    // TODO: Test case 16
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -17,31 +22,38 @@ public class MainApplication {
         System.out.println(ANSI_YELLOW + "--- Internship Placement Management System Test ---" + ANSI_RESET);
 
         Student student = new Student("U2345123F", "studentpwd", 1, 3, Majors.CSC); 
+        Student anotherStudent = new Student("U7654321A", "anotherpwd", 2, 3, Majors.CSC);
+
+        // TEST CASE 5: Company Representative Creation & Login
         CompanyRep rep = new CompanyRep("rep@tech.com", "password", 2, 
                                          "rep1", "Test Rep", "Tech Company", 
                                          "Engineering", "Manager");
+        
+
         CareerCenterStaff staff = new CareerCenterStaff("StaffAdmin", "staffpwd", 100);
 
         // Initialize Company and link users
+        anotherStudent.login("U7654321A", "anotherpwd");
         Company techCompany = new Company("Tech Company");
         techCompany.addRepresentative(rep);
         techCompany.addCareerCenterStaff(staff);
         
         
-        // TEST CASE: Failed login
+        // TEST CASE 3: Failed login
         System.out.println(ANSI_CYAN + "\n--- Test Case: Failed Student Login ---" + ANSI_RESET);
 
         student.login("Failed Username", "studentpwd");
+        student.login(student.getUsername(), "WrongPassword");
         System.out.println();
 
-        // TEST CASE: Student Creation & Login
+        // TEST CASE 1: Student Creation & Login
         System.out.println(ANSI_CYAN + "\n--- Test Case: Student Creation & Login ---" + ANSI_RESET);
 
         student.login(student.getUsername(), "studentpwd");
         System.out.println();
 
 
-        // TEST CASE: Student Change Password
+        // TEST CASE 4: Student Change Password
         System.out.println(ANSI_CYAN + "\n--- Test Case: Student Change Password ---" + ANSI_RESET);
 
         student.changePwd("studentpwd", "newPassword");
@@ -49,7 +61,7 @@ public class MainApplication {
         System.out.println();
         
 
-        // TEST CASE: Invalid ID
+        // TEST CASE 2: Invalid ID
         System.out.println(ANSI_CYAN + "\n--- Test Case: Invalid Student ID ---" + ANSI_RESET);
 
         try {
@@ -60,6 +72,18 @@ public class MainApplication {
         }
         System.out.println();
 
+        // TEST CASE: Representitive Creates Application before Acceptance
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Representitive Creates Application before Acceptance ---" + ANSI_RESET);
+
+        rep.createInternship("Software Engineer Intern",
+            "Develop modern applications.",
+            InternshipLevel.INTERMEDIATE,
+            Majors.CSC,
+            new Date(),
+            new Date(),
+            5);
+            System.out.println();
+
         // TEST CASE: Staff Authorizes Company Rep
         System.out.println(ANSI_CYAN + "\n--- Test Case: Staff Authorizes Company Rep ---" + ANSI_RESET);
 
@@ -69,7 +93,7 @@ public class MainApplication {
         System.out.println();
 
         
-        // TEST CASE: Internship Creation
+        // TEST CASE 13: Internship Creation
         System.out.println(ANSI_CYAN + "\n--- Test Case: Internship Creation ---" + ANSI_RESET);
 
         Date openingDate = new Date(System.currentTimeMillis()); 
@@ -91,7 +115,7 @@ public class MainApplication {
         System.out.println();
 
         
-        // TEST CASE: Staff Approves Internship
+        // TEST CASE 21: Staff Approves Internship
         System.out.println(ANSI_CYAN + "\n--- Test Case: Staff Approves Internship ---" + ANSI_RESET);
 
         // Application denial
@@ -107,7 +131,7 @@ public class MainApplication {
         System.out.println();
         
         
-        // TEST CASE: Invisible Internship
+        // TEST CASE 6: Invisible Internship
         System.out.println(ANSI_CYAN + "\n--- Test Case: Invisible Internship ---" + ANSI_RESET);
 
         Internship invisibleInternship = rep.createInternship(
@@ -124,8 +148,19 @@ public class MainApplication {
         testStudent.applyForInternship(invisibleInternship);
         System.out.println();
 
+        // TEST CASE 18: View Internship Details
+        System.out.println(ANSI_CYAN + "\n--- Test Case: View Internship Details ---" + ANSI_RESET);
+        rep.getInternship().forEach(System.out::println);
+        System.out.println();
 
-        // TEST CASE: Ineligible Student Application
+        // TEST CASE 20: Delete Internship
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Delete Internship ---" + ANSI_RESET);
+        boolean deleteResult = rep.deleteInternship(invisibleInternship.getId());
+        System.out.print("Internship Deleted: ");
+        System.out.println(deleteResult ? ANSI_GREEN + "TRUE" + ANSI_RESET : ANSI_RED + "FALSE" + ANSI_RESET);
+        System.out.println();
+
+        // TEST CASE 7: Ineligible Student Application
         System.out.println(ANSI_CYAN + "\n--- Test Case: Ineligible Student ---" + ANSI_RESET);
 
         techCompany.toggleInternshipVisibility(2);
@@ -133,7 +168,7 @@ public class MainApplication {
         System.out.println();
 
 
-        // TEST CASE: Full Application and Acceptance Workflow
+        // TEST CASE 14, 15, 19: Full Application and Acceptance Workflow
         System.out.println(ANSI_CYAN + "\n--- Test Case: Full Application and Acceptance Workflow ---" + ANSI_RESET);
 
         student.applyForInternship(internship);
@@ -147,12 +182,23 @@ public class MainApplication {
         }
         System.out.print("Placement Accepted: ");
         System.out.println(acceptResult ? ANSI_GREEN + "TRUE" + ANSI_RESET : ANSI_RED + "FALSE" + ANSI_RESET);
+
         System.out.println("Internship Slots Filled: " + internship.getFilledSlots() + "/" + internship.getTotalSlots());
         System.out.println("Internship Final Status: " + internship.getStatus());
         System.out.println();
         
 
-        // TEST CASE: Accepting multiple Internships
+        // TEST CASE 8: Toggle Visiblility after Acceptance
+        System.out.println(ANSI_CYAN + "\n--- Test Case: Toggle Visiblility after Acceptance ---" + ANSI_RESET);
+        boolean toggleResult = techCompany.toggleInternshipVisibility(internship.getId());
+        System.out.print("Visibility Toggled: ");
+        System.out.println(toggleResult ? ANSI_GREEN + "TRUE" + ANSI_RESET : ANSI_RED + "FALSE" + ANSI_RESET);
+        System.out.println("Internship is Visible: " + internship.isVisible());
+        student.viewInternship(techCompany);
+        anotherStudent.applyForInternship(internship);
+        System.out.println();
+
+        // TEST CASE 10: Accepting multiple Internships
         System.out.println(ANSI_CYAN + "\n--- Test Case: Accepting multiple Internships ---" + ANSI_RESET);
 
         Internship anotherInternship = rep.createInternship(
@@ -185,7 +231,7 @@ public class MainApplication {
         System.out.println();
         
         
-        // TEST CASE: Withdrawal Request and Staff Approval
+        // TEST CASE 23: Withdrawal Request and Staff Approval
         System.out.println(ANSI_CYAN + "\n--- Test Case: Withdrawal Request and Staff Approval ---" + ANSI_RESET);
         
         student.requestWithdrawal(internship.getId());
@@ -200,7 +246,7 @@ public class MainApplication {
         System.out.println();
         
         
-        // TEST CASE: Staff Generates Comprehensive Report
+        // TEST CASE 24: Staff Generates Comprehensive Report
         System.out.println(ANSI_CYAN + "\n--- Test Case: Staff Generates Comprehensive Report ---" + ANSI_RESET);
         
         List<Internship> allInternships = techCompany.getInternships();

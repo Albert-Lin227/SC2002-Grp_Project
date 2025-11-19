@@ -48,6 +48,17 @@ public class Company {
         return null;
     }
 
+    public boolean deleteInternship(int internshipId) {
+        Internship internship = getInternshipById(internshipId);
+        if (internship != null) {
+            internships.remove(internship);
+            System.out.println("Internship ID " + internshipId + " deleted successfully.");
+            return true;
+        }
+        System.out.println("Error: Internship ID " + internshipId + " not found for deletion.");
+        return false;
+    }
+
     /**
      * Adds a Company Representative to the company's list and links the rep back to this company object.
      * @param representative The CompanyRep object to add.

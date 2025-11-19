@@ -27,6 +27,7 @@ public class StudentApplication implements Serializable {
     private boolean accepted;
     private Date applicationDate;
     private Date statusUpdatedDate;
+    private Company company;
 
     /**
      * Constructs a StudentApplication object.

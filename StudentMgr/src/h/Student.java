@@ -13,6 +13,7 @@ public class Student extends User {
     private Vector<StudentApplication> applications;
     private int acceptedInternshipId;
     private static final int MAX_APPLICATIONS = 3;
+    private Company company;
 
     /**
      * Constructs a Student object.
@@ -203,6 +204,13 @@ public class Student extends User {
         app.setStatus("Pending Withdrawal");
         System.out.println("Withdrawal request submitted for approval by Career Center Staff.");
         return true;
+    }
+
+    public void viewInternship(Company company) {
+        if (acceptedInternshipId != -1) {
+            StudentApplication targetApp = getApplicationDetails(acceptedInternshipId);
+            System.out.println(targetApp.toString());
+        }
     }
 
     public void printApplications() {

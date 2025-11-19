@@ -1,6 +1,7 @@
 package h;
 
 import java.util.Date;
+import java.util.Vector;
 
 /**
  * Represents a company representative user.
@@ -92,6 +93,11 @@ public class CompanyRep extends User {
         this.isApproved = isApproved;
     }
 
+    public Vector<Internship> getInternship() {
+        if (company == null) return new Vector<>();
+        return company.getInternships();
+    }
+
     /**
      * Creates a new internship opportunity for the company.
      * Checks for account approval and delegates the actual creation and storage to the linked Company object.
@@ -121,6 +127,15 @@ public class CompanyRep extends User {
                                         openingDate, closingDate, this.username, slots);
     }
 
+    /**
+     * 
+     * @param internshipId
+     * @return true if deletion was successful, false otherwise.
+     */
+    public boolean deleteInternship(int internshipId) {
+        if (company == null) return false;
+        return company.deleteInternship(internshipId);
+    }
     /**
      * Processes a student application for a specific internship.
      * Delegates the action to the linked Company object for central processing.
