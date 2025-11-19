@@ -15,3 +15,9 @@ javac -d bin src/h/*.java
 ```bash
 java -cp bin h.MainApplication
 ```
+
+5. Run the CLI Application:
+```bash
+java -cp bin h.CLIApplication
+```
+
